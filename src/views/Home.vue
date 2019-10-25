@@ -58,7 +58,6 @@
 </template>
 
 <script>
-    // import VueAxios from "vue-axios";
     import axios from "axios";
 
     export default {
@@ -82,7 +81,7 @@
                 this.elements = [];
             },
             getElements(){
-                    this.loader.getLoad = true;
+                this.loader.getLoad = true;
                 if (this.username && this.repository){
                     const url = `http://api.github.com/repos/${this.username}/${this.repository}/issues`;
                     axios.get(url).then((response)=> {
