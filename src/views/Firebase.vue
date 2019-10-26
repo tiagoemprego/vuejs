@@ -30,9 +30,7 @@
         },
         methods: {
             postFB(){
-                let defaultDatabase = this.$firebase.database();
-
-                window.console.log(defaultDatabase);
+                window.console.log(this.$firebase);
             },
             getFB(){
 
