@@ -21,8 +21,6 @@
         mounted(){
             this.getSession();
             this.routerLinks = this.$router.options.routes.filter(r => r.name !== 'login');
-
-            window.console.log(this.routerLinks)
         },
         computed: {
         },

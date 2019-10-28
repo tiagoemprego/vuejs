@@ -1,9 +1,12 @@
+// import auth from './middleware/auth'
+// import checkAuth from './middleware/checkAuth'
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Firebase from './views/Firebase.vue'
+import Login from './views/Login.vue'
 
-Vue.use(Router)
+Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
@@ -12,14 +15,18 @@ const router = new Router({
         {
             path: '/',
             name: 'home',
-            meta: {title: 'Home'},
+            meta: {
+                title: 'Home',
+            },
             component: Home
         },
         {
             path: '/login',
             name: 'login',
-            meta: {title: 'Login'},
-            component: Firebase
+            meta: {
+                title: 'Login',
+            },
+            component: Login
         }
     ]
 });
