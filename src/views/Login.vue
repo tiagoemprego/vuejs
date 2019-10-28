@@ -42,7 +42,8 @@
                     window.uid = res.user.uid;
                     this.$router.push({name: 'home'});
                 }catch (err) {
-                    window.console.log(err)
+                    window.console.log(err.code);
+                    window.console.log(err.message)
                 }
             }
         },
