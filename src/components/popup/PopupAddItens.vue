@@ -57,7 +57,7 @@
         name: "PopupAddItems",
         props:{
             popup: {
-                isVisible: true,
+                isVisible: false,
             }
         },
         data(){

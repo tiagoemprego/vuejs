@@ -1,72 +1,75 @@
 <template>
-    <div class="container py-5">
-        <form class="form-inline my-3">
-            <label class="sr-only" for="username">Name</label>
-            <input class="form-control mr-sm-2"
-                   id="username"
-                   v-model="username"
-                   type="text"
-                   placeholder="github username">
-
-            <label class="sr-only" for="repository">Username</label>
-
-            <div class="input-group mr-sm-2">
-                <input class="form-control"
-                       id="repository"
-                       v-model="repository"
-                       type="text"
-                         placeholder="repositorio">
-            </div>
-
-            <button @click.stop.prevent="getElements" type="submit" class="btn btn-success mr-2">Buscar</button>
-            <button @click.prevent="reset()" type="submit" class="btn btn-danger">resetar</button>
-        </form>
-
-        <template v-if="selectIssue.id">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <img :src="selectIssue.user.avatar_url" alt="avatar"/>
-                    <h5 class="card-title pt-3" >{{selectIssue.title}}</h5>
-                    <!--<p class="card-text">{{selectIssue.body}}</p>-->
-                    <a href="" @click.prevent="clear()" class="btn btn-primary">Voltar</a>
-                </div>
-            </div>
-        </template>
-
-        <div v-if="!selectIssue.id">
-            <div class="row">
-                <div v-if="loader.getLoad" class="col-12 pl-5 ml-5">
-                    <img src="../assets/images/loader.gif" alt="loader" width="20px"/>
-                </div>
-            </div>
-            <h3 v-if="elements.length<1 && !loader.getLoad">Nenhum elemento</h3>
-            <div v-else>
-                <div v-for="issue in elements" :key="issue.id" class="row no-gutters p-2 border">
-                    <div class="col-1">
-                        <a @click.prevent.stop="getElementsInternal(issue)" href="">
-                            {{issue.number}}
-                            <img v-if="issue.is_loader" src="../assets/images/loader.gif" alt="loader" width="20px"/>
-                        </a>
-                    </div>
-                    <div class="col-11">
-                        {{issue.title}}
-                    </div>
-                </div>
-            </div>
+    <div class="container py-5 px-0">
+        <div class="btn-add">
+            <a @click.prevent="popup.isVisible = true" class="btn btn-warning" href="#">Adicionar</a>
         </div>
-
-        <PopupIncludes :popup="popup"/>
-
-        <div class="row">
+        <div class="row no-gutters p-0 mt-3">
             <div v-for="ele in itensSaved" :key="ele.id" class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ele.id}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{{ele.value}}</h6>
                     <p class="card-text">{{ele.description}}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">R$ {{ele.value}}</h6>
                     <p>{{helpers.transformTime(ele.cratedAt)}}</p>
                 </div>
             </div>
         </div>
+        <PopupIncludes :popup="popup"/>
+
+
+<!--        <form class="form-inline my-3">-->
+<!--            <label class="sr-only" for="username">Name</label>-->
+<!--            <input class="form-control mr-sm-2"-->
+<!--                   id="username"-->
+<!--                   v-model="username"-->
+<!--                   type="text"-->
+<!--                   placeholder="github username">-->
+
+<!--            <label class="sr-only" for="repository">Username</label>-->
+
+<!--            <div class="input-group mr-sm-2">-->
+<!--                <input class="form-control"-->
+<!--                       id="repository"-->
+<!--                       v-model="repository"-->
+<!--                       type="text"-->
+<!--                         placeholder="repositorio">-->
+<!--            </div>-->
+
+<!--            <button @click.stop.prevent="getElements" type="submit" class="btn btn-success mr-2">Buscar</button>-->
+<!--            <button @click.prevent="reset()" type="submit" class="btn btn-danger">resetar</button>-->
+<!--        </form>-->
+
+<!--        <template v-if="selectIssue.id">-->
+<!--            <div class="card" style="width: 18rem;">-->
+<!--                <div class="card-body">-->
+<!--                    <img :src="selectIssue.user.avatar_url" alt="avatar"/>-->
+<!--                    <h5 class="card-title pt-3" >{{selectIssue.title}}</h5>-->
+<!--                    &lt;!&ndash;<p class="card-text">{{selectIssue.body}}</p>&ndash;&gt;-->
+<!--                    <a href="" @click.prevent="clear()" class="btn btn-primary">Voltar</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </template>-->
+
+<!--        <div v-if="!selectIssue.id">-->
+<!--            <div class="row">-->
+<!--                <div v-if="loader.getLoad" class="col-12 pl-5 ml-5">-->
+<!--                    <img src="../assets/images/loader.gif" alt="loader" width="20px"/>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <h3 v-if="elements.length<1 && !loader.getLoad">Nenhum elemento</h3>-->
+<!--            <div v-else>-->
+<!--                <div v-for="issue in elements" :key="issue.id" class="row no-gutters p-2 border">-->
+<!--                    <div class="col-1">-->
+<!--                        <a @click.prevent.stop="getElementsInternal(issue)" href="">-->
+<!--                            {{issue.number}}-->
+<!--                            <img v-if="issue.is_loader" src="../assets/images/loader.gif" alt="loader" width="20px"/>-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    <div class="col-11">-->
+<!--                        {{issue.title}}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -90,7 +93,7 @@
                     getIssue: false
                 },
                 popup: {
-                    isVisible: true,
+                    isVisible: false,
                 },
                 itensSaved: [],
             }
@@ -163,5 +166,9 @@
 
     img{
         max-width: 100%;
+    }
+
+    .card{
+        border-radius: 0;
     }
 </style>
