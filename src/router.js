@@ -5,19 +5,32 @@ import Firebase from './views/Firebase.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
     mode: 'history',
     base: process.env.BASE_URL,
     routes: [
         {
             path: '/',
             name: 'home',
+            meta: {title: 'Home'},
             component: Home
         },
         {
-            path: '/firebase',
-            name: 'firebase',
+            path: '/login',
+            name: 'login',
+            meta: {title: 'Login'},
             component: Firebase
         }
     ]
-})
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = to.meta.title;
+
+    if (!window.uid && to.name !== 'login')
+        next({ name: 'login' });
+    else
+        next()
+});
+
+export default router

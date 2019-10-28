@@ -1,15 +1,25 @@
 <template>
     <div>
-        <form>
-            <div class="form-group">
-                <label for="name">Nome</label>
-                <input v-model="user.name" type="text" class="form-control" id="name" placeholder="Nome">
-            </div>
+        <form @submit.prevent="postFB">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input v-model="user.email" type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Email">
+                <input
+                        id="email"
+                        v-model="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Email">
             </div>
-            <button @click.prevent="postFB" type="submit" class="btn btn-success">Submit</button>
+            <div class="form-group">
+                <label for="password">Nome</label>
+                <input
+                        id="password"
+                        v-model="password"
+                        type="password"
+                        class="form-control"
+                        placeholder="Nome">
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
         </form>
     </div>
 </template>
@@ -19,22 +29,28 @@
         name: "Firebase",
         data(){
             return {
-                user: {
-                    name: '',
-                    email: ''
+                email: 'tiago@gmail.com',
+                password: '123123'
+            }
+        },
+        methods: {
+            async postFB(){
+                const {email, password} = this;
+
+                try {
+                    const  res = await this.$firebase.auth().signInWithEmailAndPassword(email, password);
+                    window.uid = res.user.uid;
+                    this.$router.push({name: 'home'});
+                }catch (err) {
+                    window.console.log(err)
                 }
             }
         },
-        mounted(){
-            this.getFB();
-        },
-        methods: {
-            postFB(){
-                window.console.log(this.$firebase);
-            },
-            getFB(){
-
-            }
+        beforeRouteEnter(to, from, next){
+            next(vm => {
+                if (window.uid)
+                    vm.$router.push({name: 'home'})
+            })
         }
     }
 </script>

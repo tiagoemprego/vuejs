@@ -104,6 +104,13 @@
             clear(){
                 this.selectIssue = {}
             }
+        },
+        mounted() {
+            this.$firebase.auth().onAuthStateChanged(user => {
+                window.uid = user ? user.uid : null;
+
+                this.$router.push({name: window.uid ? 'home' : 'login'})
+            })
         }
     }
 </script>
