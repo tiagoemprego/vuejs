@@ -76,22 +76,23 @@
                     this.postFB();
             },
             validEmail: function (email) {
+                // eslint-disable-next-line no-useless-escape
                 const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 return re.test(email);
             }
         },
-        mounted() {
-            this.$firebase.auth().onAuthStateChanged(user => {
-                window.uid = user ? user.uid : null;
-                this.$router.push({name: window.uid ? 'home' : 'login'});
-            })
-        },
-        beforeRouteEnter(to, from, next){
-            next(vm => {
-                if (window.uid)
-                    vm.$router.push({name: 'home'})
-            })
-        }
+        // mounted() {
+        //     this.$firebase.auth().onAuthStateChanged(user => {
+        //         window.uid = user ? user.uid : null;
+        //         this.$router.push({name: window.uid ? 'home' : 'login'});
+        //     })
+        // },
+        // beforeRouteEnter(to, from, next){
+        //     next(vm => {
+        //         if (window.uid)
+        //             vm.$router.push({name: 'home'})
+        //     })
+        // }
     }
 </script>
 
