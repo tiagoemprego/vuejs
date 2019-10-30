@@ -47,6 +47,12 @@
                 }
             }
         },
+        mounted() {
+            this.$firebase.auth().onAuthStateChanged(user => {
+                window.uid = user ? user.uid : null;
+                this.$router.push({name: window.uid ? 'home' : 'login'});
+            })
+        },
         beforeRouteEnter(to, from, next){
             next(vm => {
                 if (window.uid)

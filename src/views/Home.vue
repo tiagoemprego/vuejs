@@ -4,7 +4,10 @@
             <a @click.prevent="popup.isVisible = true" class="btn btn-warning" href="#">Adicionar</a>
         </div>
         <div class="row no-gutters p-0 mt-3">
-            <div v-for="ele in itensSaved" :key="ele.id" class="card" style="width: 18rem;">
+            <div v-if="loader" class="col-12 pl-5">
+                <img src="../assets/images/loader.gif" alt="loader" width="20px"/>
+            </div>
+            <div v-else v-for="ele in itensSaved" :key="ele.id" class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ele.id}}</h5>
                     <p class="card-text">{{ele.description}}</p>
@@ -32,10 +35,7 @@
                 repository: 'vue',
                 elements: [],
                 selectIssue: {},
-                loader:{
-                    getLoad: false,
-                    getIssue: false
-                },
+                loader: true,
                 popup: {
                     isVisible: false,
                 },
@@ -45,16 +45,16 @@
         methods: {
             async getData(){
                 this.itensSaved = [];
+                let self = this;
                 let array = [];
                 let playersRef = this.$firebase.database().ref("pHF74f13t8hFy8X6DYDf5w3X4dh1");
 
                 await playersRef.on("child_added", function(data) {
                     let newPlayer = data.val();
                     array.push(newPlayer);
+                    self.loader = (array.length === 0)
                 });
-
                 this.itensSaved = array;
-                window.console.log(this.itensSaved);
             }
         },
         mounted() {

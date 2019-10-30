@@ -35,6 +35,15 @@
                                                    placeholder="Valor">
                                         </div>
                                     </div>
+                                    <div class="col-12">
+                                        <input type="file"
+                                               @change="uploadFile"
+                                               ref="inputFile"
+                                               accept="image/png,image/jpg,image/png"
+                                               class="d-none"
+                                               id="archive">
+                                        <button @click.prevent="getFile" type="button" class="btn btn-outline-warning">Adicionar comprovante</button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -64,11 +73,19 @@
             return {
                 form: {
                     description: '',
-                    value: ''
-                }
+                    value: '',
+                    archive: ''
+                },
             }
         },
         methods: {
+            getFile(){
+                this.$refs.inputFile.click()
+            },
+            uploadFile: function(e) {
+                let file = e.currentTarget.files[0];
+                window.console.log(file.name.split(' ').join('-'))
+            },
             async insert(){
                 const ref = this.$firebase.database().ref(window.uid);
                 const id = ref.push().key;
