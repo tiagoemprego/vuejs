@@ -9,10 +9,11 @@
             </div>
             <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card" style="width: 18rem;">
                 <div class="card-body">
+                    <a @click.prevent="trashItem(ele.id)" href="#" class="trash">X</a>
                     <h5 class="card-title">{{ele.id}}</h5>
                     <p class="card-text">{{ele.description}}</p>
                     <h6 class="card-subtitle mb-2 text-muted">R$ {{ele.value}}</h6>
-                    <p>{{helpers.transformTime(ele.cratedAt).split(' ')[2]}}/{{helpers.transformTime(ele.cratedAt).split(' ')[3]}}</p>
+                    <p class="text-right">{{helpers.transformTime(ele.cratedAt).split(' ')[2]}}/{{helpers.transformTime(ele.cratedAt).split(' ')[3]}}</p>
                 </div>
             </div>
         </div>
@@ -49,6 +50,9 @@
                     self.loader = (array.length === 0)
                 });
                 this.itemsSaved = array;
+            },
+            trashItem(ref) {
+                window.console.log(ref);
             }
         },
         mounted() {
@@ -78,5 +82,18 @@
 
     .card{
         border-radius: 0;
+
+        .trash{
+            font-weight: bold;
+            color: white;
+            padding: 3px 6px;
+            background-color: black;
+            border-radius: 50%;
+            text-decoration: none;
+
+            &:hover{
+                background-color: red;
+            }
+        }
     }
 </style>
