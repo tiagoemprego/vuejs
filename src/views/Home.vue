@@ -7,7 +7,7 @@
             <div v-if="loader" class="col-12 pl-5">
                 <img src="../assets/images/loader.gif" alt="loader" width="20px"/>
             </div>
-            <div v-else v-for="ele in itensSaved" :key="ele.id" class="card" style="width: 18rem;">
+            <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title">{{ele.id}}</h5>
                     <p class="card-text">{{ele.description}}</p>
@@ -31,20 +31,14 @@
         data(){
             return{
                 helpers: helpers,
-                username: 'vuejs',
-                repository: 'vue',
-                elements: [],
-                selectIssue: {},
                 loader: true,
-                popup: {
-                    isVisible: false,
-                },
-                itensSaved: [],
+                popup: {isVisible: false},
+                itemsSaved: [],
             }
         },
         methods: {
             async getData(){
-                this.itensSaved = [];
+                this.itemsSaved = [];
                 let self = this;
                 let array = [];
                 let playersRef = this.$firebase.database().ref("pHF74f13t8hFy8X6DYDf5w3X4dh1");
@@ -54,7 +48,7 @@
                     array.push(newPlayer);
                     self.loader = (array.length === 0)
                 });
-                this.itensSaved = array;
+                this.itemsSaved = array;
             }
         },
         mounted() {
