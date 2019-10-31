@@ -51,8 +51,16 @@
                 });
                 this.itemsSaved = array;
             },
-            trashItem(ref) {
-                window.console.log(ref);
+            async trashItem(ref) {
+                // window.console.log(ref);
+                let adaRef = this.$firebase.database().ref('users/ada');
+                await adaRef.child(ref).remove()
+                    .then(() => {
+                        window.console.log("Remove succeeded.")
+                    })
+                    .catch(error => {
+                        window.console.log("Remove failed: " + error.message)
+                    });
             }
         },
         mounted() {
@@ -83,16 +91,25 @@
     .card{
         border-radius: 0;
 
+        &-body{
+            padding-top: 20px;
+        }
+
         .trash{
             font-weight: bold;
             color: white;
-            padding: 3px 6px;
+            padding: 0 6px;
             background-color: black;
+            box-shadow: 0 0 5px #000000;
             border-radius: 50%;
             text-decoration: none;
+            position: absolute;
+            right: 5px;
+            top: 5px;
 
             &:hover{
                 background-color: red;
+                box-shadow: 0 0 5px red;
             }
         }
     }
