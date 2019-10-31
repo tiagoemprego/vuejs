@@ -1,11 +1,5 @@
 <template>
     <div id="form-register">
-        <div v-if="errors.length">
-            <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
-            <ul>
-                <li v-for="error in errors" :key="error.id">{{ error }}</li>
-            </ul>
-        </div>
         <form @submit.prevent="checkForm">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -15,6 +9,10 @@
                         type="email"
                         class="form-control"
                         placeholder="Email">
+
+            <div v-if="errors.length" class="error">
+                <p v-for="error in errors" :key="error.id">{{ error }}</p>
+            </div>
             </div>
             <div class="form-group">
                 <label for="password">Senha</label>
@@ -81,21 +79,35 @@
                 return re.test(email);
             }
         },
-        // mounted() {
-        //     this.$firebase.auth().onAuthStateChanged(user => {
-        //         window.uid = user ? user.uid : null;
-        //         this.$router.push({name: window.uid ? 'home' : 'login'});
-        //     })
-        // },
-        // beforeRouteEnter(to, from, next){
-        //     next(vm => {
-        //         if (window.uid)
-        //             vm.$router.push({name: 'home'})
-        //     })
-        // }
+        mounted() {
+            this.$firebase.auth().onAuthStateChanged(user => {
+                window.uid = user ? user.uid : null;
+                this.$router.push({name: window.uid ? 'home' : 'login'});
+            })
+        },
+        beforeRouteEnter(to, from, next){
+            next(vm => {
+                if (window.uid)
+                    vm.$router.push({name: 'home'})
+            })
+        }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    .form-group{
+        position: relative;
+    }
+    .error{
+        position: absolute;
+        bottom: -17px;
+        left: 13px;
 
+        p{
+            margin: 0;
+            font-size: 11px;
+            font-weight: bold;
+            color: #cc1818;
+        }
+    }
 </style>

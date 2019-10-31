@@ -59,10 +59,10 @@
         },
         mounted() {
             this.getData();
-            // this.$firebase.auth().onAuthStateChanged(user => {
-            //     window.uid = user ? user.uid : null;
-            //     this.$router.push({name: window.uid ? 'home' : 'login'});
-            // })
+            this.$firebase.auth().onAuthStateChanged(user => {
+                window.uid = user ? user.uid : null;
+                this.$router.push({name: window.uid ? 'home' : 'login'});
+            })
         }
     }
 </script>
