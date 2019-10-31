@@ -34,7 +34,7 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
 
-    if (window.uid === '' && to.name !== 'login')
+    if (window.uid === null && to.name !== 'login')
         next({ name: 'login' });
     else
         next()

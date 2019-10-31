@@ -57,9 +57,17 @@
                     window.uid = res.user.uid;
                     this.$router.push({name: 'home'});
                 }catch (err) {
-                    this.popup.isVisible = true;
-                    this.popup.title = err.code;
-                    this.popup.text = err.message;
+                    if (err.message === 'INVALID_PASSWORD'){
+                        this.popup.isVisible = true;
+                        this.popup.title = 'Senha invalida :(';
+                        this.popup.text = 'parece que você digitou sua senha de forma incorreta,tente novamente!';
+                    }
+
+                    if (err.message === 'EMAIL_NOT_FOUND'){
+                        this.popup.isVisible = true;
+                        this.popup.title = 'E-mail invalido :(';
+                        this.popup.text = 'parece que você digitou suu E-mail de forma incorreta, tente novamente!';
+                    }
                 }
             },
             checkForm: function () {
