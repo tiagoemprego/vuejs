@@ -37,12 +37,16 @@
                                     </div>
                                     <div class="col-12">
                                         <input type="file"
-                                               @change="uploadFile"
+                                               @change="uploadFile($event)"
                                                ref="inputFile"
                                                accept="image/png,image/jpg,image/png"
                                                class="d-none"
                                                id="archive">
                                         <button @click.prevent="getFile" type="button" class="btn btn-outline-warning">Adicionar comprovante</button>
+                                        <div class="mt-2" v-if="form.receipt">
+                                            <a href="#" class="clear btn-danger" @click.prevent="form.receipt = ''">x</a>
+                                            {{form.receipt.name}}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -74,36 +78,63 @@
                 form: {
                     description: '',
                     value: '',
-                    archive: ''
+                    receipt: ''
                 },
+            }
+        },
+        computed:{
+            fileName() {
+                const {receipt} = this.form;
+
+                if(receipt){
+                    const split = receipt.name.split('.')
+                    return `${split[0]}-${new Date().getTime()}.${split[1]}`;
+                }else{
+                    return '';
+                }
             }
         },
         methods: {
             getFile(){
+                this.$refs.inputFile.value = null;
                 this.$refs.inputFile.click()
             },
-            uploadFile: function(e) {
-                let file = e.currentTarget.files[0];
-                window.console.log(file.name.split(' ').join('-'))
+            uploadFile({target}) {
+                this.form.receipt = target.files[0]
             },
             async insert(){
-                const ref = this.$firebase.database().ref(window.uid);
-                const id = ref.push().key;
+                let url = '';
+                try {
+                    const ref = this.$firebase.database().ref(window.uid);
+                    const id = ref.push().key;
 
-                const payload = {
-                    id,
-                    receipt: '',
-                    value: this.form.value,
-                    cratedAt: new Date().getTime(),
-                    description: this.form.description
-                };
+                    if (this.form.receipt){
+                        const snapshot = this.$firebase.storage()
+                            .ref(window.uid)
+                            .child(this.fileName)
+                            .put(this.form.receipt)
 
-                ref.child(id).set(payload, err => {
-                    if (err)
-                        window.console.log(err);
-                    else
-                        this.popup.isVisible = false;
-                })
+                        url = await snapshot.ref.getDownloadURL()
+                    }
+
+                    const payload = {
+                        id,
+                        ...this.form,
+                        receipt: url,
+                        cratedAt: new Date().getTime(),
+                    };
+
+                    ref.child(id).set(payload, err => {
+                        if (err)
+                            window.console.log(err);
+                        else
+                            this.popup.isVisible = false;
+                    })
+                }catch (error) {
+                    window.console.log(error)
+                }finally {
+                    // this.popup.isVisible = false;
+                }
             },
             closePopup: function () {
                 this.popup.isVisible = false;
