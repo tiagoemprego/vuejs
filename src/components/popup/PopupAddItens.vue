@@ -42,10 +42,18 @@
                                                accept="image/png,image/jpg,image/png"
                                                class="d-none"
                                                id="archive">
-                                        <button @click.prevent="getFile" type="button" class="btn btn-outline-warning">Adicionar comprovante</button>
-                                        <div class="mt-2" v-if="form.receipt">
-                                            <a href="#" class="clear btn-danger" @click.prevent="form.receipt = ''">x</a>
-                                            {{form.receipt.name}}
+                                        <div class="row no-gutters">
+                                            <div class="col-6">
+                                                <button @click.prevent="getFile" type="button" class="btn btn-outline-warning">Adicionar comprovante</button>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mt-2 text-center" v-if="form.receipt">
+                                                    {{form.receipt.name}}
+                                                    <a href="#" class="clear" @click.prevent="form.receipt = ''">
+                                                        <img src="https://cdn.icon-icons.com/icons2/1791/PNG/128/trashcan1_114647.png" alt="excluir">
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -87,7 +95,7 @@
                 const {receipt} = this.form;
 
                 if(receipt){
-                    const split = receipt.name.split('.')
+                    const split = receipt.name.split('.');
                     return `${split[0]}-${new Date().getTime()}.${split[1]}`;
                 }else{
                     return '';
@@ -96,7 +104,7 @@
         },
         methods: {
             getFile(){
-                this.$refs.inputFile.value = null;
+                this.$refs.inputFile.value = '';
                 this.$refs.inputFile.click()
             },
             uploadFile({target}) {
@@ -112,7 +120,7 @@
                         const snapshot = this.$firebase.storage()
                             .ref(window.uid)
                             .child(this.fileName)
-                            .put(this.form.receipt)
+                            .put(this.form.receipt);
 
                         url = await snapshot.ref.getDownloadURL()
                     }
@@ -138,6 +146,7 @@
             },
             closePopup: function () {
                 this.popup.isVisible = false;
+                this.form.receipt = ''
             }
         }
     }
@@ -149,5 +158,19 @@
     }
     .fade-enter, .fade-leave-to{
         opacity: 0;
+    }
+    .clear{
+        position: relative;
+
+        img{
+            position: absolute;
+            max-width: 20px;
+            right: -20px;
+            top: -2px;
+
+            &:hover{
+                zoom: 1.1;
+            }
+        }
     }
 </style>
