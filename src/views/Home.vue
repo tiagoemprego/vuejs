@@ -9,7 +9,7 @@
             </div>
             <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <a @click.prevent="trashItem(ele.id)" href="#" class="trash">X</a>
+                    <a @click.prevent="deleteItem(ele.id)" href="#" class="trash">X</a>
                     <h5 class="card-title">{{ele.id}}</h5>
                     <p class="card-text">{{ele.description}}</p>
                     <h6 class="card-subtitle mb-2 text-muted">R$ {{ele.value}}</h6>
@@ -39,7 +39,7 @@
         },
         methods: {
             getData(){
-                let ref = this.$firebase.database().ref(`${window.uid}`);
+                let ref = this.$firebase.database().ref(`/${window.uid}`);
 
                 ref.on('value', data => {
                     const values = data.val();
@@ -50,8 +50,7 @@
                     }
                 })
             },
-            trashItem(ref) {
-                // window.console.log(ref);
+            deleteItem(ref) {
                 let adaRef = this.$firebase.database().ref(`/${window.uid}`);
                 adaRef.child(ref).remove()
                     .then(() => {
