@@ -38,23 +38,22 @@
             }
         },
         methods: {
-            async getData(){
-                this.itemsSaved = [];
-                let self = this;
-                let array = [];
-                let playersRef = this.$firebase.database().ref("pHF74f13t8hFy8X6DYDf5w3X4dh1");
+            getData(){
+                let ref = this.$firebase.database().ref(`${window.uid}`);
 
-                await playersRef.on("child_added", function(data) {
-                    let newPlayer = data.val();
-                    array.push(newPlayer);
-                    self.loader = (array.length === 0)
-                });
-                this.itemsSaved = array;
+                ref.on('value', data => {
+                    const values = data.val();
+                    if (values)
+                    {
+                        this.itemsSaved = Object.keys(values).map(i => values[i]);
+                        this.loader = (this.itemsSaved.length === 0)
+                    }
+                })
             },
-            async trashItem(ref) {
+            trashItem(ref) {
                 // window.console.log(ref);
-                let adaRef = this.$firebase.database().ref('users/ada');
-                await adaRef.child(ref).remove()
+                let adaRef = this.$firebase.database().ref(`/${window.uid}`);
+                adaRef.child(ref).remove()
                     .then(() => {
                         window.console.log("Remove succeeded.")
                     })
