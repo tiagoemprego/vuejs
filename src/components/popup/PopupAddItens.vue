@@ -15,12 +15,12 @@
                                 <div class="row">
                                     <div class="col-9">
                                         <div class="form-group">
-                                            <label for="description">descrição</label>
+                                            <label for="title">Titulo</label>
                                             <input type="text"
-                                                   v-model="form.description"
+                                                   v-model="form.title"
                                                    required
                                                    class="form-control"
-                                                   id="description"
+                                                   id="title"
                                                    placeholder="Descrição">
                                         </div>
                                     </div>
@@ -33,6 +33,17 @@
                                                    class="form-control"
                                                    id="value"
                                                    placeholder="Valor">
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for="description">descrição</label>
+                                            <input type="text"
+                                                   v-model="form.description"
+                                                   required
+                                                   class="form-control"
+                                                   id="description"
+                                                   placeholder="Descrição">
                                         </div>
                                     </div>
                                     <div class="col-12">
@@ -60,7 +71,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button @click="closePopup" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button class="btn btn-warning">Adicionar</button>
+                                <button id="add" class="btn btn-warning">Adicionar</button>
                             </div>
                         </form>
                     </div>
@@ -83,7 +94,9 @@
         },
         data(){
             return {
+                submitted: false,
                 form: {
+                    title: '',
                     description: '',
                     value: '',
                     receipt: ''
@@ -113,6 +126,7 @@
             async insert(){
                 let url = '';
                 try {
+                    document.getElementById('add').classList.add('disabled');
                     const ref = this.$firebase.database().ref(`/${window.uid}`);
                     const id = ref.push().key;
 
@@ -120,9 +134,12 @@
                         const snapshot = this.$firebase.storage()
                             .ref(`/${window.uid}`)
                             .child(this.fileName)
-                            .put(this.form.receipt);
+                            .put(this.form.receipt)
+                            .then(function(snapshot) {
+                                return snapshot.ref.getDownloadURL()
+                            });
 
-                        url = await snapshot.ref.getDownloadURL()
+                        url = await snapshot;
                     }
 
                     const payload = {
@@ -135,18 +152,28 @@
                     ref.child(id).set(payload, err => {
                         if (err)
                             window.console.log(err);
-                        else
+                        else{
                             this.popup.isVisible = false;
+                            this.formReset();
+                        }
                     })
                 }catch (error) {
-                    window.console.log(error)
+                    window.console.log(error);
+                    document.getElementById('add').classList.add('disabled');
                 }finally {
+                    this.formReset();
                     // this.popup.isVisible = false;
                 }
             },
             closePopup: function () {
                 this.popup.isVisible = false;
-                this.form.receipt = ''
+                this.formReset();
+            },
+            formReset: function() {
+                this.form.title = '';
+                this.form.description = '';
+                this.form.value = '';
+                this.form.receipt = '';
             }
         }
     }

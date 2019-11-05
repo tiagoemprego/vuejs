@@ -8,12 +8,19 @@
                 <img src="../assets/images/loader.gif" alt="loader" width="20px"/>
             </div>
             <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card" style="width: 18rem;">
+                <a @click.prevent="deleteItem(ele.id)" href="#" class="trash">X</a>
+                <img v-if="ele.receipt" :src="ele.receipt" class="card-img-top" alt="...">
                 <div class="card-body">
-                    <a @click.prevent="deleteItem(ele.id)" href="#" class="trash">X</a>
-                    <h5 class="card-title">{{ele.id}}</h5>
+                    <h5 class="card-title">{{ele.title}}</h5>
                     <p class="card-text">{{ele.description}}</p>
-                    <h6 class="card-subtitle mb-2 text-muted">R$ {{ele.value}}</h6>
-                    <p class="text-right">{{helpers.transformTime(ele.cratedAt).split(' ')[2]}}/{{helpers.transformTime(ele.cratedAt).split(' ')[3]}}</p>
+                    <div class="row no-gutters">
+                        <div class="col-6">
+                            <h6 class="text-muted m-0">R$ {{ele.value}}</h6>
+                        </div>
+                        <div class="col-6">
+                            <p class="text-right m-0">{{helpers.transformTime(ele.cratedAt).split(' ')[2]}}/{{helpers.transformTime(ele.cratedAt).split(' ')[3]}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,7 +61,11 @@
                 let adaRef = this.$firebase.database().ref(`/${window.uid}`);
                 adaRef.child(ref).remove()
                     .then(() => {
-                        window.console.log("Remove succeeded.")
+                        window.console.log("Remove succeeded!");
+
+                        this.$firebase.storage().ref(`/${window.uid}`).child(ref).remove()
+                            .then(()=> window.console.log('Removed image!'))
+                            .catch(error => window.console.log(error))
                     })
                     .catch(error => {
                         window.console.log("Remove failed: " + error.message)
