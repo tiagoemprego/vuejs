@@ -22,8 +22,6 @@
             this.getSession();
             this.routerLinks = this.$router.options.routes.filter(r => r.name !== 'login');
         },
-        computed: {
-        },
         methods:{
             getSession() {
                 this.$firebase.auth().onAuthStateChanged(user => {
