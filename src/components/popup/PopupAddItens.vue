@@ -113,12 +113,12 @@
             async insert(){
                 let url = '';
                 try {
-                    const ref = this.$firebase.database().ref(window.uid);
+                    const ref = this.$firebase.database().ref(`/${window.uid}`);
                     const id = ref.push().key;
 
                     if (this.form.receipt){
                         const snapshot = this.$firebase.storage()
-                            .ref(window.uid)
+                            .ref(`/${window.uid}`)
                             .child(this.fileName)
                             .put(this.form.receipt);
 
