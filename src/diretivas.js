@@ -3,5 +3,6 @@ import moment from 'moment';
 
 Vue.directive('date-format', (month, {value}) =>{
     month.innerHTML =
-        `<p class="m-0" style="line-height: 1;">${moment(value).format('DD/MM/YYYY')}</p> <amall style="font-size: 12px;font-weight: 700;line-height: 1;">${moment(value).format('HH:mm:ss')}</amall>`;
+        `<small class="m-0" style="line-height: 1;">${moment(value).format('DD/MM/YYYY')}</small> 
+         <b style="font-size: 12px;line-height: 1;display: block;">${moment(value).format('HH:mm:ss')}</b>`;
 });

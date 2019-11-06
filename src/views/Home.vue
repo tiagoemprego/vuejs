@@ -14,11 +14,11 @@
                     <h5 class="card-title">{{ele.title}}</h5>
                     <p class="card-text">{{ele.description}}</p>
                     <div class="row no-gutters">
-                        <div class="col-6">
+                        <div class="col-6 align-self-center">
                             <h6 class="text-muted m-0">R$ {{ele.value}}</h6>
                         </div>
                         <div class="col-6 text-right">
-                            <div class="date" v-date-format="ele.cratedAt" />
+                            <p class="date" v-date-format="ele.cratedAt"></p>
                         </div>
                     </div>
                 </div>
@@ -125,11 +125,12 @@
 
     }
         .date{
-            a{
+            margin: 0;
+            small{
                 margin: 0;
             }
 
-            small{
+            b{
                 font-size: 10px;
             }
         }
