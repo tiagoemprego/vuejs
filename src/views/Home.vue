@@ -17,8 +17,8 @@
                         <div class="col-6">
                             <h6 class="text-muted m-0">R$ {{ele.value}}</h6>
                         </div>
-                        <div class="col-6">
-                            <p class="text-right m-0">{{helpers.transformTime(ele.cratedAt).split(' ')[2]}}/{{helpers.transformTime(ele.cratedAt).split(' ')[3]}}</p>
+                        <div class="col-6 text-right">
+                            <div class="date" v-date-format="ele.cratedAt" />
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
         },
         methods: {
             getData(){
-                let ref = this.$firebase.database().ref(`/${window.uid}`);
+                let ref = this.$firebase.database().ref("pHF74f13t8hFy8X6DYDf5w3X4dh1");
 
                 ref.on('value', data => {
                     const values = data.val();
@@ -58,7 +58,7 @@
                 })
             },
             deleteItem(ref) {
-                let adaRef = this.$firebase.database().ref(`/${window.uid}`);
+                let adaRef = this.$firebase.database().ref("pHF74f13t8hFy8X6DYDf5w3X4dh1");
                 adaRef.child(ref).remove()
                     .then(() => {
                         window.console.log("Remove succeeded!");
@@ -122,5 +122,15 @@
                 box-shadow: 0 0 5px red;
             }
         }
+
     }
+        .date{
+            a{
+                margin: 0;
+            }
+
+            small{
+                font-size: 10px;
+            }
+        }
 </style>

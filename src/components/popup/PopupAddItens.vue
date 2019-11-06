@@ -71,7 +71,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button @click="closePopup" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button v-if="disabled ? `disabled`: ''" id="add" class="btn btn-warning">Adicionar</button>
+                                <button v-if="disabled ? `disabled` : ''" id="add" class="btn btn-warning">Adicionar</button>
                             </div>
                         </form>
                     </div>

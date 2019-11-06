@@ -4,6 +4,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import firebaseVue from './firebase'
+import './diretivas';
 
 
 //Styles

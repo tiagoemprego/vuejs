@@ -1,6 +1,5 @@
 export default {
-    transformTime: time => {
-        let date = new Date(time);
-        return date.toString();
+    transformTime: date => {
+        return date.toString().replace(' ');
     },
 }
