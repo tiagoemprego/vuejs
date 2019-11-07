@@ -71,7 +71,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button @click="closePopup" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                <button v-if="disabled ? `disabled` : ''" id="add" class="btn btn-warning">Adicionar</button>
+                                <button v-if="btnDisabled ? 'disabled' : 'enabled'" id="add" class="btn btn-warning">Adicionar</button>
                             </div>
                         </form>
                     </div>
@@ -94,7 +94,7 @@
         },
         data(){
             return {
-                disabled: false,
+                btnDisabled: false,
                 form: {
                     title: '',
                     description: '',
@@ -126,7 +126,7 @@
             async insert(){
                 let url = '';
                 try {
-                    this.disabled = true;
+                    this.btnDisabled = true;
                     const ref = this.$firebase.database().ref(`/${window.uid}`);
                     const id = ref.push().key;
 
@@ -161,7 +161,7 @@
                     window.console.log(error);
                 }finally {
                     this.formReset();
-                    this.disabled = false;
+                    this.btnDisabled = false;
                 }
             },
             closePopup: function () {

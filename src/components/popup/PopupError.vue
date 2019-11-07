@@ -15,6 +15,7 @@
                         </div>
                         <div class="modal-footer">
                             <button @click="closePopup" type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+<!--                            <button @click.prevent="deleteItem()" type="button" class="btn btn-danger" data-dismiss="modal">Excluir</button>-->
                         </div>
                     </div>
                 </div>
@@ -39,7 +40,10 @@
         methods: {
             closePopup: function () {
                 this.popup.isVisible = false;
-            }
+            },
+            deleteItem (value) {
+                this.$emit('childToParent', value);
+            },
         }
     }
 </script>

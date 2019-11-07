@@ -7,7 +7,7 @@
             <div v-if="loader" class="col-12 pl-5">
                 <img src="../assets/images/loader.gif" alt="loader" width="20px"/>
             </div>
-            <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card mr-2" style="width: 18rem;">
+            <div v-else v-for="ele in itemsSaved" :key="ele.id" class="card mr-2 mb-2" style="width: 18rem;">
                 <a @click.prevent="deleteItem(ele.id)" href="#" class="trash">X</a>
                 <img v-if="ele.receipt" :src="ele.receipt" class="card-img-top" alt="...">
                 <div class="card-body">
