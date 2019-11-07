@@ -64,8 +64,8 @@
                         window.console.log("Remove succeeded!");
                         this.$firebase.storage()
                             .ref(`/${window.uid}`).child(ref).remove()
-                            .then(()=> window.console.log('Removed image!'))
-                            .catch(error => window.console.log(error))
+                            .then(()=> window.console.log('Image successfully removed!'))
+                            .catch(error => window.console.log("Remove image failed: ", error))
                     })
                     .catch(error => {
                         window.console.log("Remove failed: " + error.message)
