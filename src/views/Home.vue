@@ -53,7 +53,7 @@
                     if (values)
                     {
                         this.itemsSaved = Object.keys(values).map(i => values[i]);
-                        this.loader = (this.itemsSaved.length === 0)
+                        this.loader = this.itemsSaved.length === 0;
                     }
                 })
             },
@@ -70,10 +70,18 @@
                     .catch(error => {
                         window.console.log("Remove failed: " + error.message)
                     });
+            },
+            filtersData(filter){
+                const playersRef = this.$firebase.database().ref(`${window.uid}`);
+
+                playersRef.orderByChild("title").equalTo(`${filter}`).on("child_added", (data)=> {
+                    window.console.log(data.val().title);
+                });
             }
         },
         mounted() {
             this.getData();
+            this.filtersData();
             this.$firebase.auth().onAuthStateChanged(user => {
                 window.uid = user ? user.uid : null;
                 this.$router.push({name: window.uid ? 'home' : 'login'});
