@@ -74,7 +74,7 @@
             filtersData(filter){
                 const playersRef = this.$firebase.database().ref(`${window.uid}`);
 
-                playersRef.orderByChild("title").equalTo(`${filter}`).on("child_added", (data)=> {
+                playersRef.orderByChild("title").equalTo(`${filter}`).on("child_added", data => {
                     window.console.log(data.val().title);
                 });
             }
